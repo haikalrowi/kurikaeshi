@@ -1,25 +1,21 @@
 "use server";
 
 import { compareSync } from "bcryptjs";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { jwt } from "./jose";
 import { prisma } from "./prisma";
 
 export async function appContext() {
-  try {
-    const token = cookies().get(userLogin.name)?.value;
-    if (!token) throw new Error(JSON.stringify({ token: token ?? null }));
-    const { userId } = await jwt.verify(token);
-    const user = await prisma.user.findUniqueOrThrow({
-      where: { id: userId },
-      include: { Chat: { include: { Message: {} } } },
-    });
-    return { user };
-  } catch (error) {
-    console.log(error);
-  }
-  redirect("/app");
+  const token = cookies().get(userLogin.name)?.value;
+  if (!token) throw new Error(JSON.stringify({ token: token ?? null }));
+  const { userId } = await jwt.verify(token);
+  const user = await prisma.user.findUniqueOrThrow({
+    where: { id: userId },
+    include: { Chat: { include: { Message: {} } } },
+  });
+  return { user };
 }
 
 export async function userLogin(formData: FormData) {
@@ -36,10 +32,11 @@ export async function userLogin(formData: FormData) {
       throw new Error(JSON.stringify({ passwordsAreEqual }));
     const token = await jwt.sign({ userId: user.id });
     cookies().set(userLogin.name, token);
+    revalidatePath("/app");
   } catch (error) {
     console.log(error);
+    redirect("/app");
   }
-  redirect("/app");
 }
 
 export async function userLogout() {
