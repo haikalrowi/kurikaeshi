@@ -7,9 +7,8 @@ import { redirect } from "next/navigation";
 import { jwt } from "./jose";
 import { prisma } from "./prisma";
 
-export async function appContext() {
-  const token = cookies().get(userLogin.name)?.value;
-  if (!token) throw new Error(JSON.stringify({ token: token ?? null }));
+export async function appContext(token?: string) {
+  if (!token) throw new Error(JSON.stringify({ token: [token, typeof token] }));
   const { userId } = await jwt.verify(token);
   const user = await prisma.user.findUniqueOrThrow({
     where: { id: userId },
@@ -29,7 +28,11 @@ export async function userLogin(formData: FormData) {
       user.Password?.password!,
     );
     if (!passwordsAreEqual)
-      throw new Error(JSON.stringify({ passwordsAreEqual }));
+      throw new Error(
+        JSON.stringify({
+          passwordsAreEqual: [passwordsAreEqual, typeof passwordsAreEqual],
+        }),
+      );
     const token = await jwt.sign({ userId: user.id });
     cookies().set(userLogin.name, token);
     revalidatePath("/app");
@@ -45,7 +48,8 @@ export async function userLogout() {
 }
 
 export async function userRequestMessage(formData: FormData) {
-  const context = await appContext();
+  const token = cookies().get(userLogin.name)?.value;
+  const context = await appContext(token);
   const message = await prisma.message.create({
     data: {
       Chat: {
