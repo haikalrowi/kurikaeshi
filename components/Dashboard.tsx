@@ -1,6 +1,6 @@
 "use client";
 
-import { useScreen } from "@/hooks/useScreenWidth";
+import { useScreen } from "@/hooks/useScreen";
 import {
   Button,
   Modal,
