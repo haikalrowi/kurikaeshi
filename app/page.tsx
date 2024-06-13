@@ -1,7 +1,5 @@
+import { RedirectType, redirect } from "next/navigation";
+
 export default function App() {
-  return (
-    <div>
-      <div>App</div>
-    </div>
-  );
+  redirect("/app", RedirectType.replace);
 }
