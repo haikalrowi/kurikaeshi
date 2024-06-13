@@ -43,3 +43,23 @@ export async function userLogout() {
   cookies().delete(userLogin.name);
   redirect("/app");
 }
+
+export async function userRequestMessage(formData: FormData) {
+  const context = await appContext();
+  const message = await prisma.message.create({
+    data: {
+      Chat: {
+        connectOrCreate: {
+          where: { id: formData.get("chatId") as string },
+          create: {
+            label: "label",
+            User: { connect: { id: context.User.id } },
+          },
+        },
+      },
+      request: "request",
+      response: "response",
+    },
+  });
+  redirect(`/app?chatId=${message.chatId}`);
+}
