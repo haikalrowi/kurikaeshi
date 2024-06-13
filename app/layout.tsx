@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
-import { NextUIProvider } from "@nextui-org/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html className="bg-background text-foreground dark" lang="en">
       <body className={inter.className}>
-        <NextUIProvider>{children}</NextUIProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

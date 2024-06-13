@@ -1,5 +1,6 @@
 "use client";
 
+import { AppContext, AppContextType } from "@/context/App";
 import { useScreen } from "@/hooks/useScreen";
 import {
   Button,
@@ -7,10 +8,11 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-  Textarea,
   useDisclosure,
 } from "@nextui-org/react";
 import { Menus } from "./Dashboard/Menus";
+import { MessageCreate } from "./Dashboard/MessageCreate";
+import { Messages } from "./Dashboard/Messages";
 
 function Menu() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -43,29 +45,25 @@ function Menu() {
 }
 
 function Main() {
-  const messages = new Array(100).fill(null);
   return (
     <div className="container mx-auto flex h-screen flex-col overflow-auto p-2 [scrollbar-width:thin]">
       <div className="flex-grow">
-        {messages.map((message, index) => (
-          <div key={index}>Message {index}</div>
-        ))}
+        <Messages />
       </div>
-      <form className="sticky bottom-0">
-        <div className="flex items-end gap-1">
-          <Textarea />
-          <Button>Send</Button>
-        </div>
-      </form>
+      <div className="sticky bottom-0">
+        <MessageCreate />
+      </div>
     </div>
   );
 }
 
-export function Dashboard() {
+export function Dashboard(props: { appContext: AppContextType }) {
   return (
-    <div className="md:flex">
-      <Menu />
-      <Main />
-    </div>
+    <AppContext.Provider value={props.appContext}>
+      <div className="md:flex">
+        <Menu />
+        <Main />
+      </div>
+    </AppContext.Provider>
   );
 }
