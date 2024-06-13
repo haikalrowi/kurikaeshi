@@ -8,7 +8,30 @@ datasource db {
 }
 
 model User {
-  id    String @id @default(uuid()) @map("_id")
-  email String @unique
-  name  String
+  id        String   @id @default(uuid()) @map("_id")
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Chat      Chat[]
+}
+
+model Chat {
+  id        String    @id @default(uuid()) @map("_id")
+  label     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Message   Message[]
+  User      User      @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Message {
+  id        String   @id @default(uuid()) @map("_id")
+  request   String
+  response  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    String
 }
