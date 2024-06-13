@@ -15,7 +15,7 @@ export async function appContext() {
     where: { id: userId },
     include: { Chat: { include: { Message: {} } } },
   });
-  return { user };
+  return { User: user };
 }
 
 export async function userLogin(formData: FormData) {
