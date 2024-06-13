@@ -1,15 +1,19 @@
 // @ts-check
 
 const { PrismaClient } = require("@prisma/client");
+const { hashSync } = require("bcryptjs");
+
 const prisma = new PrismaClient();
 
 async function main() {
+  const password = hashSync("password");
   const alice = await prisma.user.upsert({
     where: { email: "alice@prisma.io" },
     update: {},
     create: {
       email: "alice@prisma.io",
       name: "Alice",
+      Password: { create: { password } },
     },
   });
   const bob = await prisma.user.upsert({
@@ -18,6 +22,7 @@ async function main() {
     create: {
       email: "bob@prisma.io",
       name: "Bob",
+      Password: { create: { password } },
     },
   });
   console.log({ alice, bob });
