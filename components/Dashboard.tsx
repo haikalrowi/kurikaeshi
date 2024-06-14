@@ -14,55 +14,49 @@ import { Menus } from "./Dashboard/Menus";
 import { MessageCreate } from "./Dashboard/MessageCreate";
 import { Messages } from "./Dashboard/Messages";
 
-function Menu() {
+export function Dashboard(props: { appContext: AppContextType }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { width } = useScreen();
-  const mdWidth = 768;
-  return (
-    <>
-      <div className="fixed right-2 top-2 md:hidden">
-        <Button onClick={onOpen} size="sm">
-          Menu
-        </Button>
-        <Modal
-          isOpen={width && width >= mdWidth ? false : isOpen}
-          onOpenChange={onOpenChange}
-          scrollBehavior="inside"
-        >
-          <ModalContent>
-            <ModalHeader>Menu</ModalHeader>
-            <ModalBody>
-              <Menus />
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      </div>
-      <div className="h-screen basis-64 overflow-auto [scrollbar-width:thin] max-md:hidden">
-        <Menus />
-      </div>
-    </>
-  );
-}
-
-function Main() {
-  return (
-    <div className="container mx-auto flex h-screen flex-col overflow-auto p-2 [scrollbar-width:thin]">
-      <div className="flex-grow">
-        <Messages />
-      </div>
-      <div className="sticky bottom-0">
-        <MessageCreate />
-      </div>
-    </div>
-  );
-}
-
-export function Dashboard(props: { appContext: AppContextType }) {
+  const modalIsOpen = width >= 640 ? false : isOpen;
   return (
     <AppContext.Provider value={props.appContext}>
-      <div className="md:flex">
-        <Menu />
-        <Main />
+      <div className="flex h-screen p-2 max-sm:flex-col">
+        <div className="sticky top-2 z-50 sm:hidden">
+          <Button onClick={onOpen} size="sm">
+            Menu
+          </Button>
+          <Modal
+            isOpen={modalIsOpen}
+            onOpenChange={onOpenChange}
+            scrollBehavior="inside"
+          >
+            <ModalContent>
+              <ModalHeader>Menu</ModalHeader>
+              <ModalBody>
+                <Menus />
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        </div>
+        <div className="h-full w-48 max-sm:hidden">
+          <Menus />
+        </div>
+        <div className="flex flex-grow flex-col gap-4 pb-4 sm:hidden">
+          <Messages />
+        </div>
+        <div className="sticky bottom-2 sm:hidden">
+          <MessageCreate />
+        </div>
+        <div className="flex flex-grow flex-col overflow-y-scroll px-2 max-sm:hidden">
+          <div className="container mx-auto flex max-w-prose flex-grow flex-col">
+            <div className="flex flex-grow flex-col gap-4 pb-2">
+              <Messages />
+            </div>
+            <div className="sticky bottom-0">
+              <MessageCreate />
+            </div>
+          </div>
+        </div>
       </div>
     </AppContext.Provider>
   );

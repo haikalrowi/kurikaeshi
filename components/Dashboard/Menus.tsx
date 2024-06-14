@@ -21,7 +21,7 @@ function UserMenu() {
   const context = useContext(AppContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
-    <div className="sticky bottom-1 flex flex-col bg-content1 md:mt-auto md:bg-background">
+    <div className="sticky bottom-1 flex flex-col bg-content1 sm:mt-auto sm:bg-background">
       <Button
         size="sm"
         variant="ghost"
@@ -66,7 +66,10 @@ export function Menus() {
       aria-label="Menu"
       disabledKeys={["noChats"]}
       bottomContent={<UserMenu />}
-      className="md:h-full"
+      classNames={{
+        base: "h-full flex-grow",
+        list: "overflow-y-scroll",
+      }}
       onAction={(key) => {}}
     >
       <ListboxItem key="newChat" showDivider href="/app">
