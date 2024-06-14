@@ -10,16 +10,17 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Textarea,
   User,
   useDisclosure,
 } from "@nextui-org/react";
 import { useContext } from "react";
 import { SubmitButton } from "../ui/SubmitButton";
 
-export function Menus() {
+function UserMenu() {
   const context = useContext(AppContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const bottomMenu = (
+  return (
     <div className="sticky bottom-1 flex flex-col bg-content1 md:mt-auto md:bg-background">
       <Button
         size="sm"
@@ -35,11 +36,17 @@ export function Menus() {
           }}
         />
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior="inside"
+      >
         <ModalContent>
           <ModalHeader>User</ModalHeader>
           <ModalBody>
-            <pre>{JSON.stringify(context.User, undefined, 2)}</pre>
+            <Textarea
+              defaultValue={JSON.stringify(context.User, undefined, 2)}
+            />
           </ModalBody>
           <ModalFooter>
             <form action={userLogout}>
@@ -50,11 +57,15 @@ export function Menus() {
       </Modal>
     </div>
   );
+}
+
+export function Menus() {
+  const context = useContext(AppContext);
   return (
     <Listbox
       aria-label="Menu"
       disabledKeys={["noChats"]}
-      bottomContent={bottomMenu}
+      bottomContent={<UserMenu />}
       className="md:h-full"
       onAction={(key) => {}}
     >
