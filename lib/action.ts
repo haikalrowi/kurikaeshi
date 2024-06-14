@@ -7,8 +7,14 @@ import { redirect } from "next/navigation";
 import { jwt } from "./jose";
 import { prisma } from "./prisma";
 
+const utils = {
+  serverError(name: string, value: unknown) {
+    return new Error(JSON.stringify([name, typeof value, value], undefined, 2));
+  },
+};
+
 export async function appContext(token?: string) {
-  if (!token) throw new Error(JSON.stringify({ token: [token, typeof token] }));
+  if (!token) throw utils.serverError("token", token);
   const { userId } = await jwt.verify(token);
   const user = await prisma.user.findUniqueOrThrow({
     where: { id: userId },
@@ -18,28 +24,20 @@ export async function appContext(token?: string) {
 }
 
 export async function userLogin(formData: FormData) {
-  try {
-    const user = await prisma.user.findUniqueOrThrow({
-      where: { email: formData.get("email") as string },
-      include: { Password: {} },
-    });
-    const passwordsAreEqual = compareSync(
-      formData.get("password") as string,
-      user.Password?.password!,
-    );
-    if (!passwordsAreEqual)
-      throw new Error(
-        JSON.stringify({
-          passwordsAreEqual: [passwordsAreEqual, typeof passwordsAreEqual],
-        }),
-      );
-    const token = await jwt.sign({ userId: user.id });
-    cookies().set(userLogin.name, token);
-    revalidatePath("/app");
-  } catch (error) {
-    console.log(error);
-    redirect("/app");
-  }
+  const user = await prisma.user.findUniqueOrThrow({
+    where: { email: formData.get("email") as string },
+    include: { Password: {} },
+  });
+  if (!user.Password) throw utils.serverError("user.Password", user.Password);
+  const passwordsAreEqual = compareSync(
+    formData.get("password") as string,
+    user.Password.password,
+  );
+  if (!passwordsAreEqual)
+    throw utils.serverError("passwordsAreEqual", passwordsAreEqual);
+  const token = await jwt.sign({ userId: user.id });
+  cookies().set(userLogin.name, token);
+  revalidatePath("/app");
 }
 
 export async function userLogout() {
