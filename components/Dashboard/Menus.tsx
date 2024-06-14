@@ -68,7 +68,7 @@ export function Menus() {
       bottomContent={<UserMenu />}
       classNames={{
         base: "h-full flex-grow",
-        list: "overflow-y-scroll",
+        list: "overflow-auto",
       }}
       onAction={(key) => {}}
     >

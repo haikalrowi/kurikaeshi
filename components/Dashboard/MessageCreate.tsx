@@ -9,7 +9,7 @@ export function MessageCreate() {
     <form action={userRequestMessage}>
       <input type="hidden" name="chatId" defaultValue={chatId ?? undefined} />
       <div className="flex items-end gap-1">
-        <Textarea />
+        <Textarea name="request" />
         <SubmitButton>Send</SubmitButton>
       </div>
     </form>
