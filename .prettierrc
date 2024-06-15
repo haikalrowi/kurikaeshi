@@ -1,3 +1,4 @@
 {
+  "tailwindAttributes": ["classNames"],
   "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-tailwindcss"]
 }
