@@ -72,6 +72,7 @@ export function MessageCreate() {
       <div className="ml-4 flex items-end gap-2">
         <Textarea
           name="request"
+          placeholder="Message"
           minRows={1}
           onKeyDown={handleKeyDown}
           classNames={{ base: "ml-4 flex items-end gap-2 shadow-2xl" }}
