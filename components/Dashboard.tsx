@@ -3,6 +3,7 @@
 import { AppContext, AppContextType } from "@/context/App";
 import { ChatContext, ChatContextState } from "@/context/Chat";
 import { useScreen } from "@/hooks/useScreen";
+import { Bars3BottomLeftIcon } from "@heroicons/react/16/solid";
 import {
   Button,
   Modal,
@@ -26,14 +27,10 @@ export function Dashboard(props: { appContext: AppContextType }) {
       <ChatContext.Provider value={chatContext}>
         <div className="flex min-h-screen gap-2 max-sm:flex-col max-sm:p-2">
           <div className="sticky top-2 z-50 sm:hidden">
-            <Button onClick={onOpen} size="sm">
-              Menu
+            <Button onClick={onOpen} size="sm" variant="light" isIconOnly>
+              <Bars3BottomLeftIcon />
             </Button>
-            <Modal
-              isOpen={isOpen2}
-              onOpenChange={onOpenChange}
-              scrollBehavior="inside"
-            >
+            <Modal isOpen={isOpen2} onOpenChange={onOpenChange}>
               <ModalContent>
                 <ModalHeader>Menu</ModalHeader>
                 <ModalBody>

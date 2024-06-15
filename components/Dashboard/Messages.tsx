@@ -20,7 +20,7 @@ function MessageResponse(props: { response: string }) {
     <Card classNames={{ base: "mr-16 p-2" }}>
       <CardBody>
         <div
-          className="prose dark:prose-invert"
+          className="prose dark:prose-invert prose-pre:whitespace-pre-wrap"
           dangerouslySetInnerHTML={{ __html: md.render(props.response) }}
         />
       </CardBody>

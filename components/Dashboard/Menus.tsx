@@ -2,6 +2,7 @@ import { AppContext } from "@/context/App";
 import { logout } from "@/lib/action/user";
 import {
   Button,
+  Input,
   Listbox,
   ListboxItem,
   ListboxSection,
@@ -10,7 +11,6 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Textarea,
   User,
   useDisclosure,
 } from "@nextui-org/react";
@@ -36,17 +36,28 @@ function UserMenu() {
           }}
         />
       </Button>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        scrollBehavior="inside"
-      >
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           <ModalHeader>User</ModalHeader>
           <ModalBody>
-            <Textarea
-              defaultValue={JSON.stringify(context.User, undefined, 2)}
-            />
+            <form>
+              <div className="flex flex-col gap-2">
+                <Input
+                  label="Name"
+                  value={context.User.name}
+                  isReadOnly
+                  labelPlacement="outside-left"
+                  classNames={{ label: "w-16" }}
+                />
+                <Input
+                  label="Email"
+                  value={context.User.email}
+                  isReadOnly
+                  labelPlacement="outside-left"
+                  classNames={{ label: "w-16" }}
+                />
+              </div>
+            </form>
           </ModalBody>
           <ModalFooter>
             <form action={logout}>
