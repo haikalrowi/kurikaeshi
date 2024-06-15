@@ -11,8 +11,8 @@ export function Login() {
         <CardBody>
           <form action={login}>
             <div className="flex flex-col gap-1">
-              <Input type="email" name="email" />
-              <Input type="password" name="password" />
+              <Input type="email" name="email" defaultValue="alice@prisma.io" />
+              <Input type="password" name="password" defaultValue="password" />
               <SubmitButton>Login</SubmitButton>
             </div>
           </form>
