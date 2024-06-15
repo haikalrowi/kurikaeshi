@@ -3,5 +3,5 @@ import { useFormStatus } from "react-dom";
 
 export function SubmitButton(props: ButtonProps) {
   const { pending } = useFormStatus();
-  return <Button {...props} type="submit" isLoading={pending} />;
+  return <Button type="submit" isLoading={pending} {...props} />;
 }
