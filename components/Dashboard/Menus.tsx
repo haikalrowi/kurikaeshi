@@ -1,5 +1,5 @@
 import { AppContext } from "@/context/App";
-import { userLogout } from "@/lib/action";
+import { logout } from "@/lib/action/user";
 import {
   Button,
   Listbox,
@@ -49,7 +49,7 @@ function UserMenu() {
             />
           </ModalBody>
           <ModalFooter>
-            <form action={userLogout}>
+            <form action={logout}>
               <SubmitButton>Logout</SubmitButton>
             </form>
           </ModalFooter>
@@ -63,21 +63,20 @@ export function Menus() {
   const context = useContext(AppContext);
   return (
     <Listbox
-      aria-label="Menu"
-      disabledKeys={["noChats"]}
+      aria-label="menus"
+      disabledKeys={["no-chats"]}
       bottomContent={<UserMenu />}
       classNames={{
         base: "h-full flex-grow",
         list: "overflow-auto",
       }}
-      onAction={(key) => {}}
     >
-      <ListboxItem key="newChat" showDivider href="/app">
+      <ListboxItem key="new-chat" showDivider href="/app">
         New chat
       </ListboxItem>
       <ListboxSection title="Chats">
         {context.User.Chat.length === 0 ? (
-          <ListboxItem key={"noChats"}>No chats</ListboxItem>
+          <ListboxItem key={"no-chats"}>No chats</ListboxItem>
         ) : (
           context.User.Chat.map((chat) => (
             <ListboxItem key={chat.id} href={`/app?chatId=${chat.id}`}>

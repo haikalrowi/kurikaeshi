@@ -1,8 +1,10 @@
+"use server";
+
 import { jwt } from "../jose";
 import { prisma } from "../prisma";
 import { actionError } from "./utils";
 
-export async function context(token?: string) {
+async function context(token?: string) {
   if (!token) throw actionError("token", token);
   const { userId } = await jwt.verify(token);
   const user = await prisma.user.findUniqueOrThrow({
@@ -11,3 +13,5 @@ export async function context(token?: string) {
   });
   return { User: user };
 }
+
+export { context };

@@ -1,7 +1,7 @@
 import { AppContext } from "@/context/App";
 import { ChatContext } from "@/context/Chat";
 import { useChat } from "@/hooks/useChat";
-import { messageCreate } from "@/lib/action";
+import { create } from "@/lib/action/message";
 import { model } from "@/lib/googleAi";
 import { Content } from "@google/generative-ai";
 import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
@@ -53,7 +53,7 @@ export function MessageCreate() {
         });
       });
     }
-    await messageCreate({
+    await create({
       chatId: chatHook.id,
       request,
       response,

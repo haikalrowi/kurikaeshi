@@ -20,7 +20,7 @@ export function Dashboard(props: { appContext: AppContextType }) {
   const chatContext = useState<ChatContextState>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const screenHook = useScreen();
-  const modalIsOpen = screenHook.width >= 640 ? false : isOpen;
+  const isOpen2 = screenHook.width >= 640 ? false : isOpen;
   return (
     <AppContext.Provider value={props.appContext}>
       <ChatContext.Provider value={chatContext}>
@@ -30,7 +30,7 @@ export function Dashboard(props: { appContext: AppContextType }) {
               Menu
             </Button>
             <Modal
-              isOpen={modalIsOpen}
+              isOpen={isOpen2}
               onOpenChange={onOpenChange}
               scrollBehavior="inside"
             >

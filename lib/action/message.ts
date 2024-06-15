@@ -1,17 +1,19 @@
+"use server";
+
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { model } from "../googleAi";
 import { prisma } from "../prisma";
-import { context as appContext } from "./app";
+import { context } from "./app";
 import { login } from "./user";
 
-export async function create(params: {
+async function create(params: {
   chatId?: string;
   request: string;
   response: string;
 }) {
   const token = cookies().get(login.name)?.value;
-  const context = await appContext(token);
+  const appContext = await context(token);
   const session = model.startChat();
   const labelResult = params.chatId
     ? undefined
@@ -30,10 +32,12 @@ export async function create(params: {
         : {
             create: {
               label: label ?? new Date().toLocaleString(),
-              User: { connect: { id: context.User.id } },
+              User: { connect: { id: appContext.User.id } },
             },
           },
     },
   });
   redirect(`/app?chatId=${message.chatId}`);
 }
+
+export { create };
