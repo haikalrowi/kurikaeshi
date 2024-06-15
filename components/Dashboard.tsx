@@ -42,21 +42,21 @@ export function Dashboard(props: { appContext: AppContextType }) {
               </ModalContent>
             </Modal>
           </div>
-          <div className="sticky top-0 h-screen w-64 max-sm:hidden">
-            <Menus />
-          </div>
           <div className="flex flex-grow flex-col gap-4 sm:hidden">
             <Messages />
           </div>
           <div className="sticky bottom-2 sm:hidden">
             <MessageCreate />
           </div>
+          <div className="sticky top-0 h-screen w-64 bg-content1 p-2 max-sm:hidden">
+            <Menus />
+          </div>
           <div className="flex flex-grow flex-col p-4 max-sm:hidden">
             <div className="container mx-auto flex max-w-prose flex-grow flex-col gap-4">
               <div className="flex flex-grow flex-col gap-4">
                 <Messages />
               </div>
-              <div className="sticky bottom-4">
+              <div className="sticky bottom-4 shadow-2xl">
                 <MessageCreate />
               </div>
             </div>

@@ -21,10 +21,10 @@ function UserMenu() {
   const context = useContext(AppContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
-    <div className="sticky bottom-1 flex flex-col bg-content1 sm:mt-auto sm:bg-background">
+    <div className="sticky bottom-1 flex flex-col sm:mt-auto">
       <Button
         size="sm"
-        variant="ghost"
+        variant="flat"
         className="h-14 justify-start"
         onClick={onOpen}
       >
@@ -65,13 +65,14 @@ export function Menus() {
     <Listbox
       aria-label="menus"
       disabledKeys={["no-chats"]}
+      selectionMode="single"
       bottomContent={<UserMenu />}
       classNames={{
         base: "h-full flex-grow",
         list: "overflow-auto",
       }}
     >
-      <ListboxItem key="new-chat" showDivider href="/app">
+      <ListboxItem key="new-chat" showDivider variant="flat" href="/app">
         New chat
       </ListboxItem>
       <ListboxSection title="Chats">
@@ -79,7 +80,11 @@ export function Menus() {
           <ListboxItem key={"no-chats"}>No chats</ListboxItem>
         ) : (
           context.User.Chat.map((chat) => (
-            <ListboxItem key={chat.id} href={`/app?chatId=${chat.id}`}>
+            <ListboxItem
+              key={chat.id}
+              variant="flat"
+              href={`/app?chatId=${chat.id}`}
+            >
               {chat.label}
             </ListboxItem>
           ))
