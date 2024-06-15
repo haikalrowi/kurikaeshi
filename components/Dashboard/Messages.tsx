@@ -5,7 +5,7 @@ import { md } from "@/lib/markdownit";
 import { Card, CardBody } from "@nextui-org/react";
 import { useContext, useDeferredValue } from "react";
 
-function MessageRequest(props: { request?: string }) {
+function MessageRequest(props: { request: string }) {
   return (
     <Card classNames={{ base: "ml-16 p-2" }}>
       <CardBody>
@@ -15,17 +15,15 @@ function MessageRequest(props: { request?: string }) {
   );
 }
 
-function MessageResponse(props: { response?: string }) {
+function MessageResponse(props: { response: string }) {
   return (
-    <Card
-      classNames={{
-        base: "mr-16 p-2",
-        body: "prose whitespace-pre-wrap dark:prose-invert",
-      }}
-    >
-      <CardBody
-        dangerouslySetInnerHTML={{ __html: md.render(props.response ?? "") }}
-      />
+    <Card classNames={{ base: "mr-16 p-2" }}>
+      <CardBody>
+        <div
+          className="prose dark:prose-invert"
+          dangerouslySetInnerHTML={{ __html: md.render(props.response) }}
+        />
+      </CardBody>
     </Card>
   );
 }

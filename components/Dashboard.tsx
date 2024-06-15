@@ -56,7 +56,7 @@ export function Dashboard(props: { appContext: AppContextType }) {
               <div className="flex flex-grow flex-col gap-4">
                 <Messages />
               </div>
-              <div className="sticky bottom-4 shadow-2xl">
+              <div className="sticky bottom-4">
                 <MessageCreate />
               </div>
             </div>

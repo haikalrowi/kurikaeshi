@@ -24,6 +24,9 @@ export function MessageCreate() {
       e.currentTarget.form?.requestSubmit();
     }
   };
+  const scrollToEnd = () => {
+    document.documentElement.scrollIntoView(false);
+  };
   const generateResult = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -52,6 +55,7 @@ export function MessageCreate() {
           currentResponse: response,
         });
       });
+      scrollToEnd();
     }
     await create({
       chatId: chatHook.id,
@@ -61,11 +65,17 @@ export function MessageCreate() {
     transition[1](() => {
       chatContext[1](undefined);
     });
+    scrollToEnd();
   };
   return (
     <form onSubmit={generateResult}>
       <div className="ml-4 flex items-end gap-2">
-        <Textarea name="request" minRows={1} onKeyDown={handleKeyDown} />
+        <Textarea
+          name="request"
+          minRows={1}
+          onKeyDown={handleKeyDown}
+          classNames={{ base: "ml-4 flex items-end gap-2 shadow-2xl" }}
+        />
         <SubmitButton
           variant="light"
           isLoading={chatContext[0]?.pending}
