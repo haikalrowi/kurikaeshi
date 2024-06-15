@@ -3,11 +3,11 @@ import { ChatContext } from "@/context/Chat";
 import { useChat } from "@/hooks/useChat";
 import { md } from "@/lib/markdownit";
 import { Card, CardBody } from "@nextui-org/react";
-import { useContext } from "react";
+import { useContext, useDeferredValue } from "react";
 
 function MessageRequest(props: { request?: string }) {
   return (
-    <Card classNames={{ base: "ml-16" }}>
+    <Card classNames={{ base: "ml-16 p-2" }}>
       <CardBody>
         <p className="whitespace-pre-wrap">{props.request}</p>
       </CardBody>
@@ -19,7 +19,7 @@ function MessageResponse(props: { response?: string }) {
   return (
     <Card
       classNames={{
-        base: "mr-16",
+        base: "mr-16 p-2",
         body: "prose whitespace-pre-wrap dark:prose-invert",
       }}
     >
@@ -35,12 +35,13 @@ export function Messages() {
   const chatContext = useContext(ChatContext);
   const chatHook = useChat();
   const chat = appContext.User.Chat.find((chat) => chat.id === chatHook.id);
-  const currentMessage = chatContext[0] && {
+  const chatContextState = useDeferredValue(chatContext[0]);
+  const currentMessage = chatContextState && {
     id: chatContext[1].name,
-    request: chatContext[0].currentRequest,
-    response: chatContext[0].currentResponse,
+    request: chatContextState.currentRequest,
+    response: chatContextState.currentResponse,
   };
-  const messages = [...(chat?.Message ?? []), currentMessage];
+  const messages = [chat?.Message, currentMessage].flat();
   return messages.map(
     (message) =>
       message && (
