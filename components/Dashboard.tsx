@@ -16,8 +16,8 @@ import { Messages } from "./Dashboard/Messages";
 
 export function Dashboard(props: { appContext: AppContextType }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { width } = useScreen();
-  const modalIsOpen = width >= 640 ? false : isOpen;
+  const screenHook = useScreen();
+  const modalIsOpen = screenHook.width >= 640 ? false : isOpen;
   return (
     <AppContext.Provider value={props.appContext}>
       <div className="flex h-screen p-2 max-sm:flex-col">
