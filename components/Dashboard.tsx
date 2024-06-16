@@ -12,19 +12,24 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menus } from "./Dashboard/Menus";
 import { MessageCreate } from "./Dashboard/MessageCreate";
 import { Messages } from "./Dashboard/Messages";
 
 export function Dashboard(props: { appContext: AppContextType }) {
-  const chatContext = useState<ChatContextState>();
+  const chatContextState = useState<ChatContextState>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const screenHook = useScreen();
+  const state = chatContextState[0];
   const isOpen2 = screenHook.width >= 640 ? false : isOpen;
+  const scrollToEnd = () => {
+    document.documentElement.scrollIntoView(false);
+  };
+  useEffect(scrollToEnd, [state]);
   return (
     <AppContext.Provider value={props.appContext}>
-      <ChatContext.Provider value={chatContext}>
+      <ChatContext.Provider value={chatContextState}>
         <div className="flex min-h-screen gap-2 max-sm:flex-col max-sm:p-2">
           <div className="sticky top-2 z-50 sm:hidden">
             <Button onClick={onOpen} size="sm" variant="light" isIconOnly>

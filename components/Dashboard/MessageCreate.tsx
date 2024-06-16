@@ -2,7 +2,7 @@ import { AppContext } from "@/context/App";
 import { ChatContext } from "@/context/Chat";
 import { useChat } from "@/hooks/useChat";
 import { create } from "@/lib/action/message";
-import { model } from "@/lib/googleAi";
+import { model } from "@/lib/google-generative-ai";
 import { Content } from "@google/generative-ai";
 import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
 import { Textarea } from "@nextui-org/react";
@@ -23,9 +23,6 @@ export function MessageCreate() {
       e.preventDefault();
       e.currentTarget.form?.requestSubmit();
     }
-  };
-  const scrollToEnd = () => {
-    document.documentElement.scrollIntoView(false);
   };
   const generateResult = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,17 +52,11 @@ export function MessageCreate() {
           currentResponse: response,
         });
       });
-      scrollToEnd();
     }
-    await create({
-      chatId: chatHook.id,
-      request,
-      response,
-    });
+    await create({ chatId: chatHook.id, request, response });
     transition[1](() => {
       chatContext[1](undefined);
     });
-    scrollToEnd();
   };
   return (
     <form onSubmit={generateResult}>

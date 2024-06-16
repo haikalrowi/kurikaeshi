@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { model } from "../googleAi";
+import { model } from "../google-generative-ai";
 import { prisma } from "../prisma";
 import { context } from "./app";
 import { login } from "./user";
@@ -18,7 +18,7 @@ async function create(params: {
   const labelResult = params.chatId
     ? undefined
     : await session.sendMessage([
-        "write a label for this message with 3 to 7 words, respond directly as a label and match the language",
+        "write a label for this message with 3 to 7 words, respond directly as a label and customize the language accordingly",
         params.request,
         params.response,
       ]);
