@@ -12,7 +12,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menus } from "./Dashboard/Menus";
 import { MessageCreate } from "./Dashboard/MessageCreate";
 import { Messages } from "./Dashboard/Messages";
@@ -21,12 +21,7 @@ export function Dashboard(props: { appContext: AppContextType }) {
   const chatContextState = useState<ChatContextState>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const screenHook = useScreen();
-  const state = chatContextState[0];
   const isOpen2 = screenHook.width >= 640 ? false : isOpen;
-  const scrollToEnd = () => {
-    document.documentElement.scrollIntoView(false);
-  };
-  useEffect(scrollToEnd, [state]);
   return (
     <AppContext.Provider value={props.appContext}>
       <ChatContext.Provider value={chatContextState}>

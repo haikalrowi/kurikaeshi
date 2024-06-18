@@ -6,27 +6,19 @@ import { model } from "@/lib/google-generative-ai";
 import { Content } from "@google/generative-ai";
 import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
 import { Textarea } from "@nextui-org/react";
-import { useContext, useTransition } from "react";
+import { useContext, useEffect, useTransition } from "react";
 import { SubmitButton } from "../ui/SubmitButton";
 
 export function MessageCreate() {
   const appContext = useContext(AppContext);
   const chatContext = useContext(ChatContext);
-  const transition = useTransition();
   const chatHook = useChat();
   const chat = appContext.User.Chat.find((chat) => chat.id === chatHook.id);
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (
-      (e.ctrlKey || e.metaKey) &&
-      (e.key === "Enter" || e.key === "NumpadEnter")
-    ) {
-      e.preventDefault();
-      e.currentTarget.form?.requestSubmit();
-    }
-  };
+  const transition = useTransition();
   const generateResult = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    e.currentTarget.reset();
     const request = formData.get("request") as string;
     transition[1](() => {
       chatContext[1]({
@@ -57,6 +49,20 @@ export function MessageCreate() {
     transition[1](() => {
       chatContext[1](undefined);
     });
+  };
+  const state = chatContext[0];
+  const scrollToEnd = () => {
+    document.documentElement.scrollIntoView(false);
+  };
+  useEffect(scrollToEnd, [state]);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      (e.key === "Enter" || e.key === "NumpadEnter")
+    ) {
+      e.preventDefault();
+      e.currentTarget.form?.requestSubmit();
+    }
   };
   return (
     <form onSubmit={generateResult}>
